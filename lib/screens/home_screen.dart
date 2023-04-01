@@ -63,95 +63,100 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView.builder(
-        itemCount: articles.length,
-        itemBuilder: (context, index) {
-          final article = articles[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailScreenPage(article: article),
-                ),
-              );
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.45,
-              child: Card(
-                elevation: 2,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
-                        child: Image.network(
-                          article.imageUrl,
-                          fit: BoxFit.fill,
-                        ),
+      body: articles.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                final article = articles[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetailScreenPage(article: article),
                       ),
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      child: Text(
-                        article.title,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
+                    );
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    child: Card(
+                      elevation: 2,
+                      margin: EdgeInsets.symmetric(
                         horizontal: 10,
+                        vertical: 10,
                       ),
-                      child: Row(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Source: ${article.sourceName}',
+                          Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20)),
+                              child: Image.network(
+                                article.imageUrl,
+                                fit: BoxFit.fill,
                               ),
-                              Text(
-                                formattedDateTime(article.publishedAt),
-                              ),
-                            ],
+                            ),
                           ),
-                          IconButton(
-                            icon: article.isFavorite
-                                ? Icon(Icons.favorite)
-                                : Icon(Icons.favorite_border),
-                            color: Colors.red,
-                            onPressed: () {
-                              setState(() {
-                                article.isFavorite = !article.isFavorite;
-                                print(article.isFavorite);
-                              });
-                            },
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 2),
+                            child: Text(
+                              article.title,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Source: ${article.sourceName}',
+                                    ),
+                                    Text(
+                                      formattedDateTime(article.publishedAt),
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: article.isFavorite
+                                      ? Icon(Icons.favorite)
+                                      : Icon(Icons.favorite_border),
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    setState(() {
+                                      article.isFavorite = !article.isFavorite;
+                                      print(article.isFavorite);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
