@@ -6,10 +6,6 @@ import 'dart:convert';
 import '../model/article.dart';
 import 'detail_screen.dart';
 
-const apiKey = '173fa7cf72b940b1ad95959b7d7e4cb8';
-const baseUrl = 'https://newsapi.org/v2/everything';
-const String topic = 'cyber%20crime%20AND%20spam';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -39,18 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<Article>> _fetchArticles() async {
     final response = await http.get(Uri.parse(
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=173fa7cf72b940b1ad95959b7d7e4cb8'));
+        'https://newsapi.org/v2/top-headlines?country=in&apiKey=173fa7cf72b940b1ad95959b7d7e4cb8'));
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final List<dynamic> articlesJson = json['articles'];
+      print(articlesJson);
       return articlesJson
           .map((articleJson) => Article(
-                title: articleJson['title'],
-                description: articleJson['description'],
-                imageUrl: articleJson['urlToImage'],
-                publishedAt: articleJson['publishedAt'],
-                sourceName: articleJson['source']['name'],
-                url: articleJson['url'],
+                title: articleJson['title'] ?? '',
+                description: articleJson['description'] ?? '',
+                imageUrl: articleJson['urlToImage'] ?? '',
+                publishedAt: articleJson['publishedAt'] ?? '',
+                sourceName: articleJson['source']['name'] ?? '',
+                url: articleJson['url'] ?? '',
               ))
           .toList();
     } else {
